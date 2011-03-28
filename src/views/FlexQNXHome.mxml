@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:View xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		xmlns:s="library://ns.adobe.com/flex/spark" 
+		viewActivate="viewActivateHandler(event)"
+		destructionPolicy="none"
+		xmlns:mx="library://ns.adobe.com/flex/mx">
+<fx:Script>
+	<![CDATA[
+	import mx.events.FlexEvent;
+	
+	import qnx.ui.data.DataProvider;
+	import qnx.ui.data.IDataProvider;
+	import qnx.ui.listClasses.ListSelectionMode;
+	import qnx.ui.picker.Picker;
+	
+	private var qnxList:Picker;
+		
+	private function viewActivateHandler(event:FlexEvent):void {
+		if (!qnxList) {
+			qnxList = new Picker();
+			//create the data provider for this component
+			qnxList.dataProvider = createPickerDataProvider();
+			qnxList.width = 400;
+			qnxList.height = 50;
+			qnxList.setListWidth(0, 100);
+			qnxList.setListWidth(1, 200);
+			qnxList.setListWidth(2, 100);
+			qnxList.selectedIndices = [1,1,111];
+			
+			wrapper.addChild(qnxList);
+		}
+	}
+	
+	private function createPickerDataProvider():IDataProvider {
+		// Create three arrays to handle days, months, years.
+		var day:Array = new Array();
+		var month:Array = new Array();
+		var year:Array = new Array();
+		
+		// Populate the month 
+		for (var i:int=1; i<32; i++) {
+			day.push({label: i.toString()});
+		}
+		
+		// Populate and month array and create the month
+		month.push({label: "January"});
+		month.push({label: "February"});
+		month.push({label: "March"});
+		month.push({label: "April"});
+		month.push({label: "May"});
+		month.push({label: "June"});
+		month.push({label: "July"});
+		month.push({label: "August"});
+		month.push({label: "September"});
+		month.push({label: "October"});
+		month.push({label: "November"});
+		month.push({label: "December"});
+		
+		// Create the year DataProvider
+		for (var l:int=1900; l<2012; l++) {
+			year.push({label: l.toString()});
+		}
+		
+		// create the data provider
+		var data:Array = new Array();
+		data.push(new DataProvider(day));
+		data.push(new DataProvider(month));
+		data.push(new DataProvider(year));
+		return new DataProvider(data);
+	}
+	]]>
+</fx:Script>
+	
+	<mx:UIComponent id="wrapper" top="50" left="20"/>
+	<s:Button label="Next View" width="200" left="20" top="200" click="navigator.pushView(SecondView)"/>
+</s:View>
